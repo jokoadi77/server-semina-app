@@ -8,6 +8,8 @@ const app = express();
 
 // Router 
 const categoriesRouter = require('./app/api/v1/categories/router');
+const imagesRouter = require('./app/api/v1/images/router')
+
 
 const v1 = '/api/v1/cms';
 const notFoundMiddleware = require('./app/middlewares/not-found')
@@ -30,6 +32,7 @@ app.get('/', (req,res) => {
 });
 
 app.use(v1, categoriesRouter);
+app.use(v1, imagesRouter)
 
 
 app.use( notFoundMiddleware);
