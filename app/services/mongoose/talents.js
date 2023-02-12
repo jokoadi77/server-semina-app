@@ -99,10 +99,10 @@ const deleteTalents = async (req) => {
     return result
 }
 
-const checkingTalents = async (req) => {
+const checkingTalents = async (id) => {
     const result = await Talents.findOne({ _id: id})
 
-    if(!result) throw new NotFoundErrors(`Tidak adapembicara dengan id: ${id}`)
+    if(!result) throw new NotFoundErrors(`Tidak ada pembicara dengan id: ${id}`)
 
     return result
 }

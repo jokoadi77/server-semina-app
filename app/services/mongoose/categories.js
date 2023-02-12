@@ -72,7 +72,7 @@ const deleteCategories = async (req) => {
 const checkingCategories = async (id) => {
     const result = await categories.findOne({ _id: id});
 
-    if (!result) throw new NotFoundErrors(`Tidak adakategori dengan id: ${id}`)
+    if (!result) throw new BadRequestErrors(`Tidak ada kategori dengan id: ${id}`)
 
     return result
 }
@@ -83,4 +83,5 @@ module.exports = {
      geteOneCategories, 
      updateCategories, 
      deleteCategories,
-    checkingCategories}
+    checkingCategories
+}

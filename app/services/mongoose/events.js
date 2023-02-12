@@ -12,7 +12,7 @@ const getAllEvents = async (req) => {
     let condition = {};
 
     if(keyword) {
-        condition = {...condition, title: { $regex: keyword, options: 'i'} }
+        condition = {...condition, title: { $regex: keyword, $options: 'i'} }
     }
 
     if(category) {
@@ -24,7 +24,7 @@ const getAllEvents = async (req) => {
     }
     
     const result = await Events.find(condition)
-    .populate({ path: 'image', selec: '_id name'})
+    .populate({ path: 'image', select: '_id name'})
     .populate({
         path: 'category',
         select: '_id name',
@@ -36,14 +36,14 @@ const getAllEvents = async (req) => {
     });
 
     return result
-}
+};
 
 const createEvents = async (req) => {
     const {
         title,
         date,
         about,
-        tagLine,
+        tagline,
         venueName,
         keyPoint,
         statusEvent,
@@ -68,7 +68,7 @@ const createEvents = async (req) => {
         title,
         date,
         about,
-        tagLine,
+        tagline,
         venueName,
         keyPoint,
         statusEvent,
@@ -86,7 +86,7 @@ const getOneEvents = async (req) => {
    const { id } = req.params;
 
    const result = await Events.findOne( { _id: id})
-    .populate({ path: 'image', selecr: '_id name'})
+    .populate({ path: 'image', select: '_id name'})
     .populate({
         path: 'category',
         select: '_id name',
@@ -110,7 +110,7 @@ const updateEvents = async (req) => {
         title,
         date,
         about,
-        tagLine,
+        tagline,
         venueName,
         keyPoint,
         statusEvent,
@@ -125,19 +125,30 @@ const updateEvents = async (req) => {
     await checkingCategories(category);
     await checkingTalents(talent);
 
+    //cari event berdasarkan field id
+    const checkEvent = await Events.findOne({
+        _id: id,
+    });
+    //jika result false / null makan menampilkan error
+    if (!checkEvent) throw new NotFoundErrors(`tidak ada event dengan id: ${id}`);
+
+
     // cari Events dengan field name
-    const check = await Events.findOne({ title });
+    const check = await Events.findOne({ 
+        title,
+        _id: { $ne: id}
+    });
 
     //apabila check true / data Events sudah ada maka tampilkan error bad request dgn message pembicara duplikat
     if (check) throw new BadRequestErrors('judul event sudah terdaftar')
 
-    const result = await Events.findByIdAndUpdate(
+    const result = await Events.findOneAndUpdate(
         { _id: id},
         {
         title,
         date,
         about,
-        tagLine,
+        tagline,
         venueName,
         keyPoint,
         statusEvent,
@@ -148,9 +159,7 @@ const updateEvents = async (req) => {
     },
         { new: true, runValidators: true}
     );
-
-    // jika id result false / null maka akan menampilkan error
-    if (!result) throw new NotFoundErrors(`Tidak ada acara dengan id: ${id}`);
+    
 
     return result;
 };

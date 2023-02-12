@@ -43,7 +43,7 @@ const EventSchema = new mongoose.Schema(
             required: [true, 'Tagline harus diisi'],
         },
         keyPoint: {
-            type: String
+            type: [String],
         },
         venueName: {
             type: String,
@@ -65,7 +65,7 @@ const EventSchema = new mongoose.Schema(
         },
         category: {
             type: mongoose.Types.ObjectId,
-            ref: 'Talent',
+            ref: 'Category',
             required: true,
         },
         talent: {

@@ -1,4 +1,5 @@
-const { StatusCodes } = require('http-status-codes')
+const { StatusCodes } = require('http-status-codes');
+
 const { getAllEvents,
         createEvents,
         getOneEvents,
@@ -20,7 +21,7 @@ const create = async (req,res, next) => {
 
 const index = async ( req, res, next) => {
     try {
-        const result = await getAllEvents()
+        const result = await getAllEvents(req)
         res.status(StatusCodes.OK).json({
             data:result
         })
