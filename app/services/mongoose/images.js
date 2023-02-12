@@ -17,7 +17,7 @@ createImages = async (req) => {
 // cara ke dua 
 // generate url setelah submit baru simpan images
 generateUrlImage = async (req) => {
-    const  result = `uploads/${req.file.filename}`
+    const  result = `uploads/${req.file.filename}`;
 
     return result
 }
