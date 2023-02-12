@@ -1,9 +1,11 @@
-const Images = require('../../api/v1/images/model')
+const Images = require('../../api/v1/images/model');
+const { NotFoundErrors } = require('../../errors');
+
 
 
 
 // Cara pertama
-createImages = async (req) => {
+const createImages = async (req) => {
     const result = await Images.create({
         name: req.file
         ? `uploads/${req.file.filename}`
@@ -16,10 +18,20 @@ createImages = async (req) => {
 
 // cara ke dua 
 // generate url setelah submit baru simpan images
-generateUrlImage = async (req) => {
+const generateUrlImage = async (req) => {
     const  result = `uploads/${req.file.filename}`;
 
     return result
 }
 
-module.exports = { createImages, generateUrlImage}
+//tambah function checking image
+ const checkingImage = async (id) => {
+    const result = await Images.findOne({ _id: id });
+    console.log(result);
+
+    if(!result) throw new NotFoundErrors(`Tidak ada gambar dengan id : ${id}`)
+
+    return result
+}
+
+module.exports = { createImages,  checkingImage}
