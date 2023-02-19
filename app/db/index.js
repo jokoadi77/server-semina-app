@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
+mongoose.set('strictQuery', true)
 
-const { urldb } = require('../config')
+const { urlDb } = require('../config')
 
-mongoose.connect(urldb, {
+mongoose.connect(urlDb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     
